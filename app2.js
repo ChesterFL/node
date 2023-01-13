@@ -11,19 +11,16 @@ const xss = require('xss-clean')
 const rateLimit = require('express-rate-limit')
 const hpp = require('hpp')
 const cors = require('cors')
-// const ejs = require("ejs");
 
 const errorHandler = require('./middleware/error')
 
 const DBConnection = require('./config/db')
 
-dotenv.config({path: './config/.env'})
+dotenv.config({path: './config/.env2'})
 
 DBConnection();
 
-const channelRoutes = require('./routes/channel')
-const videoRoutes = require('./routes/videos')
-
+const chainRoutes = require('./routes/chain')
 
 const app = express()
 
@@ -35,12 +32,6 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'))
 }
 
-// File uploading
-app.use(
-    fileupload({
-        createParentPath: true
-    })
-)
 
 // Sanitize data
 app.use(mongoSanitize())
@@ -54,33 +45,15 @@ app.use(xss())
 // Enable CORS
 app.use(cors())
 
-// Rate limiting
-// const limiter = rateLimit({
-//   windowMs: 10 * 60 * 1000, // 10 mins
-//   max: 100 // 100 request per 10 mins
-// })
-
-// app.use(limiter)
 
 // Prevent http param pollution
 app.use(hpp())
 
 app.set('view engine', 'ejs');
-// app.set('views', path.join(__dirname, 'views'));
-
-
-app.use(express.static(path.join(__dirname, 'public'), {maxAge: 3600000}))
-
-// app.use((req, res, next) => {
-//   setTimeout(() => {
-//     next()
-//   }, 1000)
-// })
 
 const versionOne = (routeName) => `/api/v1/${routeName}`
 
-app.use(versionOne('channel'), channelRoutes)
-app.use(versionOne('videos'), videoRoutes)
+app.use(versionOne('chain'), chainRoutes)
 
 app.use(errorHandler)
 

@@ -105,6 +105,7 @@ dist
 
 package-lock.json
 .env
+.env2
 public/uploads
 .vscode
 .idea/
