@@ -6,22 +6,25 @@ const ChainSchema = new Schema(
     {
         address: {
             type: String,
-            default: '',
+            trim: true,
             lowercase: true,
-            unique: true
+            unique: true,
+            required: true,
         },
         channelName: {
             type: String,
-            default: '',
-            unique: true
+            trim: true,
+            index: true,
+            unique: true,
+            sparse: true
         },
         group: {
             type: String,
-            default: ''
+            required: true
         },
         overlay: {
             type: String,
-            default: ''
+            required: true
         },
     },
     {toJSON: {virtuals: true}, toObject: {virtuals: true}, timestamps: true}
