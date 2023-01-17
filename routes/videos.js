@@ -14,7 +14,7 @@ const {protect, signatureVer} = require('../middleware/auth')
 
 
 router.route('/')
-    .get(signatureVer, getVideos)
+    .get(getVideos)
     .post(createVideo)
 
 router.route('/category')
