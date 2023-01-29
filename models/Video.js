@@ -23,11 +23,10 @@ const VideoSchema = new Schema(
         },
         thumbnail: {
             type: String,
-            default: ""
+            required: true,
         },
-        url: {
+        hash: {
             type: String,
-            default: "",
             required: true
         },
         category: {
@@ -36,7 +35,6 @@ const VideoSchema = new Schema(
         },
         overlay: {
             type: String,
-            default: "",
             required: true
         },
     },

@@ -6,6 +6,7 @@ const ChannelSchema = new Schema(
     {
         name: {
             type: String,
+            default: "",
             unique: true
         },
         address: {
@@ -16,12 +17,15 @@ const ChannelSchema = new Schema(
         },
         avatar: {
             type: String,
+            default: "",
         },
         banner: {
-            type: String
+            type: String,
+            default: "",
         },
         introduction: {
             type: String,
+            default: "",
         },
         topVideoId: {
             type: mongoose.Schema.ObjectId,
