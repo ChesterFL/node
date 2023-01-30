@@ -13,7 +13,7 @@ exports.getVideos = asyncHandler(async (req, res, next) => {
     if (category) filter.category = category;
     if (channelId) filter.channelId = channelId;
     const videos = Video.find(filter);
-    const data = await videos.populate("channelId").skip((page - 1) * count).limit(count)
+    const data = await videos.populate("channelId").skip((page - 1) * count).limit(Number(count))
     const total = await videos.count();
     res.status(200).json({
         success: true, data: {
