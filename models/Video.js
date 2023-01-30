@@ -23,7 +23,6 @@ const VideoSchema = new Schema(
         },
         thumbnail: {
             type: String,
-            required: true,
         },
         hash: {
             type: String,
