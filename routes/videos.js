@@ -22,7 +22,7 @@ router.route('/category')
 
 router.route('/:id')
     .get(getVideo)
-    .patch(updateVideo)
+    .put(updateVideo)
     .delete(deleteVideo)
 
 

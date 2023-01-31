@@ -9,7 +9,7 @@ const {
 
 router.route('/:address')
     .get(getInfo)
-    .patch(updateInfo)
+    .put(updateInfo)
 
 
 router.route('/')
