@@ -14,9 +14,10 @@ const ChainSchema = new Schema(
         channelName: {
             type: String,
             trim: true,
-            index: true,
-            unique: true,
-            sparse: true
+            index: {
+                unique: true,
+                sparse: true
+            },
         },
         group: {
             type: String,
