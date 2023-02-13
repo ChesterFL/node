@@ -30,5 +30,4 @@ const ChainSchema = new Schema(
     },
     {toJSON: {virtuals: true}, toObject: {virtuals: true}, timestamps: true}
 )
-
 module.exports = mongoose.model('Chain', ChainSchema)

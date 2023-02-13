@@ -1,11 +1,10 @@
 const jwt = require('jsonwebtoken')
 const asyncHandler = require('./async')
 const ErrorResponse = require('../utils/errorResponse')
-const Eth = require("web3-eth");
-const Web3Utils = require("web3-utils");
-const Chain = require("../models/Chain")
+const User = require("../models/User");
 
 exports.protect = asyncHandler(async (req, res, next) => {
+
     let token
 
     if (
@@ -26,8 +25,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
     try {
         // Verify token
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
-
-        req.user = await User.findById(decoded.id).populate('subscribers').populate({path: 'invitations'})
+        req.user = await User.findOne({address: decoded.address});
         next()
     } catch (err) {
         return next(new ErrorResponse('Not authorized to access this route', 401))
@@ -48,20 +46,3 @@ exports.authorize = (...roles) => {
         next()
     }
 }
-
-
-exports.signatureVer = asyncHandler(async (req, res, next) => {
-    const {signature} = req.body;
-    const message = 'update data';
-    const eth = new Eth();
-    let address
-    try {
-        address = eth.accounts.recover(message, signature).toLowerCase()
-    }catch (e) {
-        return next(new ErrorResponse("Invalid signature"));
-    }
-    const data = await Chain.findOne({address});
-    if (!data) return next(new ErrorResponse("Address not yet created channel"));
-    req.user.address = address;
-    next();
-})

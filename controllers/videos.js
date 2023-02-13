@@ -5,6 +5,7 @@ const ErrorResponse = require('../utils/errorResponse')
 const moment = require('moment')
 
 const Video = require('../models/Video')
+const Img = require('../models/Img')
 const mongoose = require("mongoose");
 
 exports.getVideos = asyncHandler(async (req, res, next) => {
@@ -28,7 +29,10 @@ exports.getVideos = asyncHandler(async (req, res, next) => {
 
 exports.getVideo = asyncHandler(async (req, res, next) => {
     const {id} = req.params
-    const video = await Video.findById(id).populate('channelId');
+    const video = await Video.findById(id)
+        .populate('channelId')
+        .populate({path: 'likes'})
+        .populate({path: 'dislikes'})
     if (!video) return next(new ErrorResponse(`No video with that id of ${id}`))
     res.status(200).json({success: true, data: video})
 });
@@ -48,6 +52,30 @@ exports.updateVideo = asyncHandler(async (req, res, next) => {
     res.status(200).json({success: true, data: video})
 });
 
+exports.uploadVideoThumbnail = asyncHandler(async (req, res, next) => {
+    const video = await Video.findById(req.params.id)
+    if (!video)
+        return next(new ErrorResponse(`No video with id of ${req.params.id}`, 404))
+    if (!req.files) {
+        return next(new ErrorResponse(`Please upload a file`, 404))
+    }
+    const file = req.files.image;
+    if (!file.mimetype.startsWith('image')) {
+        return next(new ErrorResponse(`Please upload an image file`, 404))
+    }
+    const base64 = file.data.toString('base64');
+    if (video.thumbnail) {
+        await Img.findByIdAndUpdate(video.thumbnail, {
+            $set: {base64}
+        });
+    } else {
+        const img = await Img.create({base64});
+        video.thumbnail = img._id;
+        video.save();
+    }
+    res.status(200).json({success: true, data: video})
+})
+
 exports.deleteVideo = asyncHandler(async (req, res, next) => {
     const {id} = req.params
     const video = await Video.findById(id);
@@ -58,10 +86,10 @@ exports.deleteVideo = asyncHandler(async (req, res, next) => {
 });
 
 exports.getCategory = asyncHandler(async (req, res, next) => {
-    const {channelId} = req.query;
+    const {address} = req.user;
     const data = await Video.aggregate([
         {
-            $match: {channelId: mongoose.Types.ObjectId(channelId)}
+            $match: {"channelId.address": address}
         },
         {
             $group: {
@@ -77,6 +105,19 @@ exports.getCategory = asyncHandler(async (req, res, next) => {
     const categories = data.map(item => item._id.category);
     return res.status(200).json({success: true, data: categories})
 });
+
+exports.updateViews = asyncHandler(async (req, res, next) => {
+    let video = await Video.findById(req.params.id)
+
+    if (!video)
+        return next(new ErrorResponse(`No video with that id of ${req.params.id}`))
+
+    video.views++
+
+    await video.save()
+
+    res.status(200).json({success: true, data: video})
+})
 
 //
 // // @desc    Get videos

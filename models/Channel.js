@@ -25,11 +25,15 @@ const ChannelSchema = new Schema(
         },
         introduction: {
             type: String,
-            default: "",
+            default: ""
         },
         topVideoId: {
             type: mongoose.Schema.ObjectId,
-            ref: 'Video'
+            ref: 'Video',
+        },
+        vType: {
+            type: Number,
+            default: 0
         }
     },
     {toJSON: {virtuals: true}, toObject: {virtuals: true}, timestamps: true}

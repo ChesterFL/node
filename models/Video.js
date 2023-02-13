@@ -17,12 +17,22 @@ const VideoSchema = new Schema(
             type: String,
             default: ''
         },
+        views: {
+            type: Number,
+            default: 0
+        },
+        status: {
+            type: String,
+            enum: ['draft', 'private', 'public', 'member','secret'],
+            default: 'draft'
+        },
         tags: {
             type: Array,
             default: []
         },
         thumbnail: {
             type: String,
+            default: ""
         },
         hash: {
             type: String,
@@ -41,33 +51,33 @@ const VideoSchema = new Schema(
 )
 
 VideoSchema.index({title: 'text'})
-VideoSchema.index({userId: 1})
-VideoSchema.index({url: 1})
+VideoSchema.index({channelId: 1})
+VideoSchema.index({hash: 1})
 
-// VideoSchema.virtual('dislikes', {
-//     ref: 'Feeling',
-//     localField: '_id',
-//     foreignField: 'videoId',
-//     justOne: false,
-//     count: true,
-//     match: {type: 'dislike'}
-// })
-//
-// VideoSchema.virtual('likes', {
-//     ref: 'Feeling',
-//     localField: '_id',
-//     foreignField: 'videoId',
-//     justOne: false,
-//     count: true,
-//     match: {type: 'like'}
-// })
-//
-// VideoSchema.virtual('comments', {
-//     ref: 'Comment',
-//     localField: '_id',
-//     foreignField: 'videoId',
-//     justOne: false,
-//     count: true
-// })
+VideoSchema.virtual('dislikes', {
+    ref: 'Feeling',
+    localField: '_id',
+    foreignField: 'videoId',
+    justOne: false,
+    count: true,
+    match: {type: 'dislike'}
+})
+
+VideoSchema.virtual('likes', {
+    ref: 'Feeling',
+    localField: '_id',
+    foreignField: 'videoId',
+    justOne: false,
+    count: true,
+    match: {type: 'like'}
+})
+
+VideoSchema.virtual('comments', {
+    ref: 'Comment',
+    localField: '_id',
+    foreignField: 'videoId',
+    justOne: false,
+    count: true
+})
 
 module.exports = mongoose.model('Video', VideoSchema)

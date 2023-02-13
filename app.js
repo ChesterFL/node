@@ -23,9 +23,16 @@ DBConnection();
 
 const channelRoutes = require('./routes/channel')
 const videoRoutes = require('./routes/videos')
+const imgRoutes = require('./routes/img')
+const userRoutes = require('./routes/user')
+const feelingRoutes = require('./routes/feelings')
+const subscriptionRoutes = require('./routes/subscriptions')
+const bookmarkRoutes = require('./routes/bookmark')
+const revenueRouters = require('./routes/revenue')
 
 
 const app = express()
+
 
 app.use(express.json())
 
@@ -68,19 +75,19 @@ app.use(hpp())
 app.set('view engine', 'ejs');
 // app.set('views', path.join(__dirname, 'views'));
 
-
 app.use(express.static(path.join(__dirname, 'public'), {maxAge: 3600000}))
 
-// app.use((req, res, next) => {
-//   setTimeout(() => {
-//     next()
-//   }, 1000)
-// })
 
 const versionOne = (routeName) => `/api/v1/${routeName}`
 
 app.use(versionOne('channel'), channelRoutes)
 app.use(versionOne('videos'), videoRoutes)
+app.use(versionOne('img'), imgRoutes)
+app.use(versionOne('user'), userRoutes)
+app.use(versionOne('feelings'), feelingRoutes)
+app.use(versionOne('subscriptions'), subscriptionRoutes)
+app.use(versionOne('bookmark'), bookmarkRoutes)
+app.use(versionOne('revenue'), revenueRouters)
 
 app.use(errorHandler)
 
