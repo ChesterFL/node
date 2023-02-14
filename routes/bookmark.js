@@ -22,13 +22,13 @@ router.route('/')
 
 router.post('/check', checkBookmark)
 
-router.route('/bookmarks').get(
-    advancedResults(Bookmark, [{path: 'bookmarkId'}], {
-        status: 'private',
-        filter: 'channel'
-    }),
-    getBookmarks
-)
+// router.route('/bookmarks').get(
+//     advancedResults(Bookmark, [{path: 'bookmarkId'}], {
+//         status: 'private',
+//         filter: 'channel'
+//     }),
+//     getBookmarks
+// )
 
 router
     .route('/channels')

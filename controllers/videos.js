@@ -9,22 +9,7 @@ const Img = require('../models/Img')
 const mongoose = require("mongoose");
 
 exports.getVideos = asyncHandler(async (req, res, next) => {
-    let {page = 1, count = 12, category, channelId} = req.query;
-    page = Number(page);
-    count = Number(count);
-    let filter = {};
-    if (category) filter.category = category;
-    if (channelId) filter.channelId = channelId;
-    const total = await Video.find(filter).count();
-    const data = await Video.find(filter).populate("channelId").skip((page - 1) * count).limit(count)
-    res.status(200).json({
-        success: true, data: {
-            page,
-            count,
-            total,
-            list: data
-        }
-    })
+    res.status(200).json(res.advancedResults)
 });
 
 exports.getVideo = asyncHandler(async (req, res, next) => {

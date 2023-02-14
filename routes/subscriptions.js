@@ -20,13 +20,10 @@ router.post('/', createSubscriber)
 
 router.post('/check', checkSubscription)
 
-router.route('/subscribers').get(
-    advancedResults(Subscription, [{path: 'subscriberId'}], {
-        status: 'private',
-        filter: 'channel'
-    }),
-    getSubscribers
-)
+// router.route('/subscribers').get(
+//     advancedResults(Subscription, [{path: 'subscriberId'}]),
+//     getSubscribers
+// )
 
 router
     .route('/channels')

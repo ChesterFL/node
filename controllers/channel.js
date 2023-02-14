@@ -5,8 +5,8 @@ const Img = require("../models/Img");
 
 
 exports.getInfo = asyncHandler(async (req, res, next) => {
-    const {address} = req.user;
-    const data = await Channel.findOne({address: address.toLowerCase()})
+    const {address} = req.query;
+    const data = await Channel.findOne({address: address?.toLowerCase()})
         .populate("topVideoId");
     res.status(200).json({success: true, data})
 })

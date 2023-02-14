@@ -9,50 +9,34 @@ const advancedResults = require('../middleware/advancedResults')
 
 const router = express.Router()
 
-router.use(protect)
-
-router.route('/')
-    .post(createVideo)
-
+// router.use(protect)
 
 router.route('/public')
-    .post(advancedResults(Video, [
-                {path: 'channelId'},
-                {path: 'likes'},
-                {path: 'dislikes'},
-            ],
-            {
-                status: 'public'
-            }),
+    .post(createVideo)
+    .get(advancedResults(Video, [
+            {path: 'channelId'},
+            {path: 'likes'},
+            {path: 'dislikes'},
+        ], "public"),
         getVideos)
+
+router.route('/secret')
+    .post(createVideo)
+    .get(advancedResults(Video, [
+            {path: 'channelId'},
+            {path: 'likes'},
+            {path: 'dislikes'},
+        ], 'secret'),
+        getVideos)
+
 router.route('/private')
-    .post(advancedResults(
-            Video,
-            [
-                {path: 'channelId'},
-                {path: 'likes'},
-                {path: 'dislikes'},
-            ],
-            {
-                status: 'private'
-            }
-        ),
+    .post(createVideo)
+    .get(advancedResults(Video, [
+            {path: 'channelId'},
+            {path: 'likes'},
+            {path: 'dislikes'},
+        ], "private"),
         getVideos)
-
-router.route('/featured')
-    .post(advancedResults(
-            Video,
-            [
-                {path: 'channelId'},
-                {path: 'likes'},
-                {path: 'dislikes'},
-            ],
-            {
-                status: 'featured'
-            }
-        ),
-        getVideos)
-
 
 router.route('/category')
     .get(getCategory)

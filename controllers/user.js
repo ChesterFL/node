@@ -24,7 +24,7 @@ exports.login = asyncHandler(async (req, res, next) => {
             address,
             loginTime: new Date(Number(timespan))
         }
-    }, {upsert: true})
+    }, {upsert: true, new: true})
     if (!user) {
         return next(new ErrorResponse('Please Create Account', 400))
     }
