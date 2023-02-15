@@ -6,6 +6,7 @@ const {
 } = require('../controllers/img')
 const {protect} = require("../middleware/auth");
 
+router.use(protect);
 
 router.get('/:id', getImg)
 

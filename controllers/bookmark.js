@@ -25,7 +25,7 @@ exports.getChannels = asyncHandler(async (req, res, next) => {
 exports.checkBookmark = asyncHandler(async (req, res, next) => {
     const channel = await Bookmark.findOne({
         channelId: req.body.channelId,
-        bookmarkId: req.user._id
+        userId: req.user._id
     })
 
     if (!channel) {
@@ -46,13 +46,13 @@ exports.createBookmark = asyncHandler(async (req, res, next) => {
     }
     let bookmark = await Bookmark.findOne({
         channelId: channelId,
-        subscriberId: req.user._id
+        userId: req.user._id
     })
 
     if (!bookmark) {
         bookmark = await Bookmark.create({
             channelId: channelId,
-            subscriberId: req.user._id
+            userId: req.user._id
         })
     }
     res.status(200).json({success: true, data: bookmark})
@@ -62,7 +62,7 @@ exports.deleteBookmark = asyncHandler(async (req, res, next) => {
     const {channelId} = req.body;
     let bookmark = await Bookmark.deleteOne({
         channelId: channelId,
-        subscriberId: req.user._id
+        userId: req.user._id
     })
     res.status(200).json({success: true, data: bookmark})
 })
@@ -72,7 +72,7 @@ exports.deleteBookmark = asyncHandler(async (req, res, next) => {
 // @access  Private
 exports.getBookmarkVideos = asyncHandler(async (req, res, next) => {
     const channels = await Bookmark.find({
-        bookmarkId: req.user._id
+        userId: req.user._id
     })
 
     if (channels.length === 0)

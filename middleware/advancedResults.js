@@ -11,6 +11,8 @@ const advancedResults = (
         req.query.status = {$in: ['public', 'member']}
     } else if (status === 'secret') {
         req.query.status = {$in: ['public', 'member', 'secret']}
+    } else if (status === undefined) {
+        req.query.userId = req.user._id
     }
 
     const reqQuery = {...req.query}

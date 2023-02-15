@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 
 const SubscriptionSchema = new Schema(
     {
-        subscriberId: {
+        userId: {
             type: mongoose.Schema.ObjectId,
             ref: 'User',
             required: [true, 'Subscriber id is required']

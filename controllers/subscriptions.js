@@ -25,7 +25,7 @@ exports.getChannels = asyncHandler(async (req, res, next) => {
 exports.checkSubscription = asyncHandler(async (req, res, next) => {
     const channel = await Subscription.findOne({
         channelId: req.body.channelId,
-        subscriberId: req.user._id
+        userId: req.user._id
     })
 
     if (!channel) {
@@ -47,20 +47,20 @@ exports.createSubscriber = asyncHandler(async (req, res, next) => {
 
     let subscription = await Subscription.findOne({
         channelId: channelId,
-        subscriberId: req.user._id
+        userId: req.user._id
     })
 
     if (subscription && (!subscription.tx)) {
         await Subscription.deleteMany({
             channelId: channelId,
-            subscriberId: req.user._id
+            userId: req.user._id
         })
         return res.status(200).json({success: true, data: {}})
     }
     if (!subscription) {
         // return res.status(200).json({success: true, data: {}})
         subscription = await Subscription.create({
-            subscriberId: req.user._id,
+            userId: req.user._id,
             channelId: channelId
         })
     }
@@ -72,7 +72,7 @@ exports.createSubscriber = asyncHandler(async (req, res, next) => {
 // @access  Private
 exports.getSubscribedVideos = asyncHandler(async (req, res, next) => {
     const channels = await Subscription.find({
-        subscriberId: req.user._id
+        userId: req.user._id
     })
 
     if (channels.length === 0)

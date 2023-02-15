@@ -72,12 +72,12 @@ VideoSchema.virtual('likes', {
     match: {type: 'like'}
 })
 
-VideoSchema.virtual('comments', {
-    ref: 'Comment',
-    localField: '_id',
-    foreignField: 'videoId',
-    justOne: false,
-    count: true
-})
+// VideoSchema.virtual('comments', {
+//     ref: 'Comment',
+//     localField: '_id',
+//     foreignField: 'videoId',
+//     justOne: false,
+//     count: true
+// })
 
 module.exports = mongoose.model('Video', VideoSchema)

@@ -86,7 +86,7 @@ app.use(versionOne('img'), imgRoutes)
 app.use(versionOne('user'), userRoutes)
 app.use(versionOne('feelings'), feelingRoutes)
 app.use(versionOne('subscriptions'), subscriptionRoutes)
-app.use(versionOne('bookmark'), bookmarkRoutes)
+app.use(versionOne('bookmarks'), bookmarkRoutes)
 app.use(versionOne('revenue'), revenueRouters)
 
 app.use(errorHandler)

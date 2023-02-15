@@ -19,14 +19,9 @@ exports.login = asyncHandler(async (req, res, next) => {
     let message = `${address} login FavorTube at ${timespan}`
     let addr = eth.accounts.recover(message, signature).toLowerCase();
     if (addr !== address) return next(new ErrorResponse('Invalid credentials', 400))
-    const user = await User.findOneAndUpdate({address}, {
-        $set: {
-            address,
-            loginTime: new Date(Number(timespan))
-        }
-    }, {upsert: true, new: true})
+    let user = await User.findOne({address});
     if (!user) {
-        return next(new ErrorResponse('Please Create Account', 400))
+        user = await User.create({address, loginTime: new Date()});
     }
     sendTokenResponse(user, 200, res)
 })
